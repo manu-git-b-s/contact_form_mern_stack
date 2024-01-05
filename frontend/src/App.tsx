@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import axios from "axios";
 
 const App = () => {
   const [values, setValues] = useState({ name: "", number: "", address: "", state: "", city: "", message: "" });
@@ -9,7 +10,7 @@ const App = () => {
     setValues({ ...values, [name]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       values.name === "" ||
       values.number === "" ||
@@ -20,7 +21,9 @@ const App = () => {
     ) {
       alert("All fields are required!");
     } else {
-      console.log(values);
+      await axios.post("http://localhost:8080/api/v1/post", values).then((res) => {
+        alert(res.data.message);
+      });
       setValues({ name: "", number: "", address: "", state: "", city: "", message: "" });
     }
   };
